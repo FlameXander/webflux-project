@@ -10,17 +10,26 @@ import reactor.core.publisher.Mono;
 import ru.flamexander.reactive.service.dtos.ProductDetailsDto;
 import ru.flamexander.reactive.service.services.ProductDetailsService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/detailed")
 @RequiredArgsConstructor
 public class ProductsDetailsController {
     private final ProductDetailsService productDetailsService;
 
+    @GetMapping("/{id}")
+    public Mono<ProductDetailsDto> getManySlowProducts(@PathVariable Long id) {
+        return productDetailsService.getProductDetailsById(id);
+    }
+
+    @GetMapping("/many/{ids}")
+    public Flux<ProductDetailsDto> getByListSlowProducts(@PathVariable List<Long> ids) {
+        return productDetailsService.getProductDetailsByIds(ids);
+    }
+
     @GetMapping("/demo")
-    public Flux<ProductDetailsDto> getManySlowProducts() {
-        Mono<ProductDetailsDto> p1 = productDetailsService.getProductDetailsById(1L);
-        Mono<ProductDetailsDto> p2 = productDetailsService.getProductDetailsById(2L);
-        Mono<ProductDetailsDto> p3 = productDetailsService.getProductDetailsById(3L);
-        return p1.mergeWith(p2).mergeWith(p3);
+    public Flux<ProductDetailsDto> getAllSlowProducts() {
+        return productDetailsService.getAllProducts();
     }
 }

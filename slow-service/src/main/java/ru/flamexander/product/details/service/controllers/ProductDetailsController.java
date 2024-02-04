@@ -11,10 +11,10 @@ import ru.flamexander.product.details.service.dtos.ProductDetailsDto;
 public class ProductDetailsController {
     @GetMapping("/{id}")
     public ProductDetailsDto getProductDetailsById(@PathVariable Long id) throws InterruptedException {
-        if (id > 100) {
+        if (id % 2 == 0) {
             throw new RuntimeException();
         }
         Thread.sleep(2500 + (int)(Math.random() * 2500));
-        return new ProductDetailsDto(id, "Product description..");
+        return new ProductDetailsDto(id, "Product description " + id);
     }
 }
